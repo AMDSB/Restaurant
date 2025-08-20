@@ -19,7 +19,7 @@ public class Facture {
     @NotNull
     private Double montantTotal;
 
-    private Utilisateur utilisateur;
-
-    private Commande commande;
+//    private Utilisateur utilisateur;
+//
+//    private Commande commande;
 }

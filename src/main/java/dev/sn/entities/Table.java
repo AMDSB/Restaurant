@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@Entity
+@Entity(name = "TableResto")
 @RequiredArgsConstructor
 public class Table {
     @Setter

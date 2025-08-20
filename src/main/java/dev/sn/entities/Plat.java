@@ -16,11 +16,5 @@ public class Plat {
     private String description;
     private Double price;
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 }
