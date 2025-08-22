@@ -73,6 +73,22 @@ public class MenuServiceImpl implements MenuService {
         return null;
     }
 
+//    public MenuDto update(long menuId, MenuDto menuDto) {
+//        return menuRepository.findById(menuId)
+//                .map(existingMenu -> {
+//                    if (menuDto.getName() != null) {
+//                        existingMenu.setName(menuDto.getName());
+//                    }
+//                    if (menuDto.getDescription() != null) {
+//                        existingMenu.setDescription(menuDto.getDescription());
+//                    }
+//                    Menu updatedMenu = menuRepository.save(existingMenu);
+//                    return menuMapper.toMenuDto(updatedMenu);
+//                })
+//                .orElseThrow(() -> new RuntimeException("Menu non trouvé avec id: " + menuId));
+//    }
+
+
     @Override
 //    public String deleteById(long menuId) {
 //        menuRepository.deleteById(menuId);
