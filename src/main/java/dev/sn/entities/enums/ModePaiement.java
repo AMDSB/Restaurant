@@ -1,4 +1,4 @@
-package dev.sn.entities;
+package dev.sn.entities.enums;
 
 public enum ModePaiement {
 

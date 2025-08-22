@@ -1,5 +1,7 @@
 package dev.sn.entities;
 
+import dev.sn.entities.enums.ModePaiement;
+import dev.sn.entities.enums.StatutPaiement;
 import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
 

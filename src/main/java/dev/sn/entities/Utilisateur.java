@@ -1,5 +1,6 @@
 package dev.sn.entities;
 
+import dev.sn.entities.enums.Role;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

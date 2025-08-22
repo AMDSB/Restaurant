@@ -34,7 +34,7 @@ public class MenuController {
         return menuService.findAll();
     }
 
-//    @PutMapping("/{id}")
+    @PutMapping("/{id}")
 //    public MenuDto update(@PathVariable long id, @RequestBody MenuDto menuDto){
 //        return menuService.update(id, menuDto);
 //    }
