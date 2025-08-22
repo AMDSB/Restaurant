@@ -1,10 +1,12 @@
 package dev.sn.entities;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @Entity
 @RequiredArgsConstructor
+@Data
 public class Commande {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,10 +1,12 @@
 package dev.sn.entities;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Entity
+@Data
 public class Utilisateur {
 
     @Id
