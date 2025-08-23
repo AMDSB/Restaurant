@@ -11,7 +11,6 @@ public interface UtilisateurMapper {
 
     Utilisateur toUtilisateur(UtilisateurDto utilisateurDto) ;
 
-    void updateUtilisateurFromDto(UtilisateurDto dto, @MappingTarget Utilisateur entity);
 
 
 }

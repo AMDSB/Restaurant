@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
 @Service
 
 public class UtilisateurServiceImpl implements UtilisateurService {
-    
+
     private UtilisateurRepository utilisateurRepository;
     private UtilisateurMapper utilisateurMapper;
-    
+
     public UtilisateurServiceImpl(UtilisateurRepository utilisateurRepository, UtilisateurMapper utilisateurMapper) {
         this.utilisateurRepository = utilisateurRepository;
         this.utilisateurMapper = utilisateurMapper;
@@ -31,7 +31,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         Utilisateur utilisateursaved = utilisateurRepository.save(utilisateur);
         return utilisateurMapper.toUtilisateurDto(utilisateursaved);
     }
-    
+
     @Override
     public UtilisateurDto create(UtilisateurDto utilisateurDto) {
         return save(utilisateurDto);
@@ -53,29 +53,45 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Override
     public UtilisateurDto update(int id, UtilisateurDto utilisateurDto) {
+        Optional<UtilisateurDto> utilisateurDtoOptional = findById(id);
 
-        Utilisateur existingUser = utilisateurRepository.findById((int) id)
-                .orElseThrow(() -> new EntityNotFoundException("Utilisateur avec l'id " + id + " non trouvé"));
+        if (utilisateurDtoOptional.isPresent()) {
+            UtilisateurDto existingUtilisateur = utilisateurDtoOptional.get();
 
-        // 2. Vérifier l’email
-        if (utilisateurDto.getEmail() != null && !utilisateurDto.getEmail().isBlank()) {
-            utilisateurRepository.findByEmail(utilisateurDto.getEmail())
-                    .ifPresent(user -> {
-                        if (!user.getId().equals(existingUser.getId())) {
-                            throw new IllegalArgumentException("Cet email est déjà utilisé par un autre utilisateur");
-                        }
-                    });
+            if (utilisateurDto.getNom() != null) {
+                existingUtilisateur.setNom(utilisateurDto.getNom());
+            } else {
+                System.out.println(" Le champ 'nom' est vide. Ancienne valeur conservée.");
+            }
+
+            if (utilisateurDto.getPrenom() != null) {
+                existingUtilisateur.setPrenom(utilisateurDto.getPrenom());
+            } else {
+                System.out.println(" Le champ 'prenom' est vide. Ancienne valeur conservée.");
+            }
+
+            if (utilisateurDto.getEmail() != null) {
+                existingUtilisateur.setEmail(utilisateurDto.getEmail());
+            } else {
+                System.out.println(" Le champ 'email' est vide. Ancienne valeur conservée.");
+            }
+
+            if (utilisateurDto.getPassword() != null) {
+                existingUtilisateur.setPassword(utilisateurDto.getPassword());
+            } else {
+                System.out.println(" Le champ 'Password' est vide. Ancienne valeur conservée.");
+            }
+
+            System.out.println(" Utilisateur mis à jour avec succès !");
+            return save(existingUtilisateur);
+
+        } else {
+            System.out.println(" Erreur : Aucun utilisateur trouvé avec l'id " + id);
+            return null;
         }
-
-        // 3. Mettre à jour les champs via MapStruct
-        utilisateurMapper.updateUtilisateurFromDto(utilisateurDto, existingUser);
-
-        // 4. Sauvegarder
-        Utilisateur updatedUser = utilisateurRepository.save(existingUser);
-
-        // 5. Retourner le DTO
-        return utilisateurMapper.toUtilisateurDto(updatedUser);
     }
+
+
 
     @Override
     public String deleteById(int id) {

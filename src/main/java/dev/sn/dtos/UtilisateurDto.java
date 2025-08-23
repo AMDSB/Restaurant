@@ -13,6 +13,8 @@ public class UtilisateurDto {
     private String prenom;
     private String email;
     private Role role;
+    private String password;
+
 
     public Role getRole() {
         return role;
@@ -54,5 +56,11 @@ public class UtilisateurDto {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
