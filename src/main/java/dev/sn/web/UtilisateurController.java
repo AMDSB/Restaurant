@@ -2,7 +2,9 @@ package dev.sn.web;
 
 import dev.sn.dtos.UtilisateurDto;
 import dev.sn.entities.Utilisateur;
+import dev.sn.entities.enums.Role;
 import dev.sn.service.interfaces.UtilisateurService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import java.util.List;
 @Controller
 @RestController
 @RequestMapping("/api/utilisateurs")
+@RequiredArgsConstructor
 
 public class UtilisateurController {
 
@@ -35,6 +38,16 @@ public class UtilisateurController {
             return ResponseEntity.ok(utilisateurService.findById(id).get());
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<UtilisateurDto>> searchUtilisateur(@RequestParam String nom) {
+        return ResponseEntity.ok(utilisateurService.findByName(nom));
+    }
+
+    @GetMapping("/search1")
+    public ResponseEntity<List<UtilisateurDto>> searchUtilisateurByRole(@RequestParam Role role) {
+        return ResponseEntity.ok(utilisateurService.findByRole(role));
     }
 
     @PostMapping

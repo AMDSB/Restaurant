@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+
 public class MenuServiceImpl implements MenuService {
     final private MenuRepository menuRepository;
     final private MenuMapper menuMapper;

@@ -2,13 +2,14 @@ package dev.sn.service.impl;
 
 import dev.sn.dtos.UtilisateurDto;
 import dev.sn.entities.Utilisateur;
+import dev.sn.entities.enums.Role;
 import dev.sn.mappers.UtilisateurMapper;
 import dev.sn.repositories.UtilisateurRepository;
 import dev.sn.service.interfaces.UtilisateurService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,8 +19,8 @@ import java.util.stream.Collectors;
 
 public class UtilisateurServiceImpl implements UtilisateurService {
 
-    private UtilisateurRepository utilisateurRepository;
-    private UtilisateurMapper utilisateurMapper;
+    private final UtilisateurRepository utilisateurRepository;
+    private final UtilisateurMapper utilisateurMapper;
 
     public UtilisateurServiceImpl(UtilisateurRepository utilisateurRepository, UtilisateurMapper utilisateurMapper) {
         this.utilisateurRepository = utilisateurRepository;
@@ -45,9 +46,34 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
+    public List<UtilisateurDto> findByName(String nom) {
+        if (nom == null || nom.trim().isEmpty()) {
+            System.out.println(" Erreur : le nom fourni est vide ou invalide.");
+            return new ArrayList<>(); // retourne une liste vide
+        }
+
+        // Récupération des utilisateurs avec ce nom (supposons que tu as un repository qui fait ça)
+        List<UtilisateurDto> utilisateurs = utilisateurRepository.findByNom(nom);
+
+        if (utilisateurs == null || utilisateurs.isEmpty()) {
+            System.out.println("⚠️ Aucun utilisateur trouvé avec le nom : " + nom);
+            return new ArrayList<>();
+        }
+
+        System.out.println("✅ " + utilisateurs.size() + " utilisateur(s) trouvé(s) avec le nom : " + nom);
+        return utilisateurs;
+    }
+
+    @Override
     public Optional<UtilisateurDto> findById(int id) {
         return utilisateurRepository.findById(id)
                 .map(utilisateurMapper::toUtilisateurDto);
+    }
+
+    @Override
+    public List<UtilisateurDto> findByRole(Role role) {
+
+        return utilisateurRepository.findByRole(role);
     }
 
 

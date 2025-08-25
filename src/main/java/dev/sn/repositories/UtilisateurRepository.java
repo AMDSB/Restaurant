@@ -1,6 +1,8 @@
 package dev.sn.repositories;
 
+import dev.sn.dtos.UtilisateurDto;
 import dev.sn.entities.Utilisateur;
+import dev.sn.entities.enums.Role;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.data.domain.Sort;
@@ -11,6 +13,10 @@ import java.util.Optional;
 
 public interface UtilisateurRepository extends JpaRepository<Utilisateur, Integer> {
     Optional<Utilisateur> findByEmail(String email);
+
+    List<UtilisateurDto> findByNom(String nom);
+
+    List<UtilisateurDto> findByRole(Role role);
 
 //    public UtilisateurRepository() {}
 //
