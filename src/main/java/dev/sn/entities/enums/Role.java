@@ -5,5 +5,9 @@ public enum Role {
     GERANT,
     SERVEUR,
     CUISINIER,
-    CLIENT
+    CLIENT;
+
+    public String toUpperCase() {
+        return name().toUpperCase();
+    }
 }

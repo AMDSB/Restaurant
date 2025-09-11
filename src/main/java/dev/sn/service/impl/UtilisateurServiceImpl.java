@@ -27,10 +27,32 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         this.utilisateurMapper = utilisateurMapper;
     }
 
-    private UtilisateurDto save(UtilisateurDto utilisateurDto){
-        Utilisateur utilisateur = utilisateurMapper.toUtilisateur(utilisateurDto);
-        Utilisateur utilisateursaved = utilisateurRepository.save(utilisateur);
-        return utilisateurMapper.toUtilisateurDto(utilisateursaved);
+    @Override
+    public List<UtilisateurDto> findAll() {
+        return utilisateurRepository.findAll()
+                .stream()
+                .filter(utilisateur -> !utilisateur.isDeleted()) // vérifie directement ici si l'utilisateur est supprimé
+                .map(utilisateurMapper::toUtilisateurDto)
+                .collect(Collectors.toList());
+    }
+
+    public UtilisateurDto save(UtilisateurDto utilisateurDto) {
+        // Vérification si email déjà présent
+        Optional<Utilisateur> existingUser = utilisateurRepository.findByEmail(utilisateurDto.getEmail());
+
+        if (existingUser.isPresent() && !existingUser.get().isDeleted()) {
+            System.out.println(" Erreur : un utilisateur avec l'email "
+                    + utilisateurDto.getEmail() + " existe déjà !");
+            return null; // ou lever une exception custom si tu veux
+        }else {
+
+            // Si l'email est unique, on enregistre
+            Utilisateur utilisateur = utilisateurMapper.toUtilisateur(utilisateurDto);
+            Utilisateur savedUser = utilisateurRepository.save(utilisateur);
+
+            System.out.println(" Utilisateur créé avec succès ");
+            return utilisateurMapper.toUtilisateurDto(savedUser);
+        }
     }
 
     @Override
@@ -39,97 +61,91 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
-    public List<UtilisateurDto> findAll() {
-        return utilisateurRepository.findAll().stream()
-                .map(utilisateurMapper::toUtilisateurDto).
-                collect(Collectors.toList());
-    }
-
-    @Override
     public List<UtilisateurDto> findByName(String nom) {
-        if (nom == null || nom.trim().isEmpty()) {
-            System.out.println(" Erreur : le nom fourni est vide ou invalide.");
+        if (nom == null || nom.isBlank()) {
+            System.out.println("Erreur : le nom fourni est vide ou invalide.");
             return new ArrayList<>(); // retourne une liste vide
         }
 
-        // Récupération des utilisateurs avec ce nom (supposons que tu as un repository qui fait ça)
-        List<UtilisateurDto> utilisateurs = utilisateurRepository.findByNom(nom);
+        List<Utilisateur> utilisateurs = utilisateurRepository.findByNom(nom.trim());
 
-        if (utilisateurs == null || utilisateurs.isEmpty()) {
-            System.out.println("⚠️ Aucun utilisateur trouvé avec le nom : " + nom);
+        if (utilisateurs.isEmpty()) {
+            System.out.println(" Aucun utilisateur trouvé avec le nom : " + nom);
             return new ArrayList<>();
         }
+        return utilisateurs
+                .stream()
+                .filter(utilisateur -> !utilisateur.isDeleted()) // filtre les utilisateurs supprimés
+                .map(utilisateurMapper::toUtilisateurDto)
+                .toList();
+    }
 
-        System.out.println("✅ " + utilisateurs.size() + " utilisateur(s) trouvé(s) avec le nom : " + nom);
-        return utilisateurs;
+    @Override
+    public Optional<UtilisateurDto> findByEmail(String email) {
+        return utilisateurRepository.findByEmail(email)
+                .map(utilisateurMapper::toUtilisateurDto);
     }
 
     @Override
     public Optional<UtilisateurDto> findById(int id) {
         return utilisateurRepository.findById(id)
+                .filter(utilisateur -> !utilisateur.isDeleted())
                 .map(utilisateurMapper::toUtilisateurDto);
     }
 
     @Override
     public List<UtilisateurDto> findByRole(Role role) {
 
-        return utilisateurRepository.findByRole(role);
-    }
+        List<Utilisateur> users = utilisateurRepository.findByRole(role);
 
+        return users
+                .stream()
+                .filter(utilisateur -> !utilisateur.isDeleted()) // filtre les utilisateurs supprimés
+                .map(utilisateurMapper::toUtilisateurDto)
+                .toList();
+    }
 
     @Override
     public UtilisateurDto update(int id, UtilisateurDto utilisateurDto) {
-        Optional<UtilisateurDto> utilisateurDtoOptional = findById(id);
+        Utilisateur utilisateur = utilisateurRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Utilisateur avec l'id " + id + " n'existe pas."));
 
-        if (utilisateurDtoOptional.isPresent()) {
-            UtilisateurDto existingUtilisateur = utilisateurDtoOptional.get();
-
-            if (utilisateurDto.getNom() != null) {
-                existingUtilisateur.setNom(utilisateurDto.getNom());
-            } else {
-                System.out.println(" Le champ 'nom' est vide. Ancienne valeur conservée.");
+        // Vérif email (ignorer si c'est le même user)
+        if (utilisateurDto.getEmail() != null && !utilisateurDto.getEmail().isBlank()) {
+            Optional<Utilisateur> existingUser = utilisateurRepository.findByEmail(utilisateurDto.getEmail());
+            if (existingUser.isPresent()) {
+                existingUser.get();
+                throw new RuntimeException("Erreur : un utilisateur avec l'email " + utilisateurDto.getEmail() + " existe déjà !");
             }
-
-            if (utilisateurDto.getPrenom() != null) {
-                existingUtilisateur.setPrenom(utilisateurDto.getPrenom());
-            } else {
-                System.out.println(" Le champ 'prenom' est vide. Ancienne valeur conservée.");
-            }
-
-            if (utilisateurDto.getEmail() != null) {
-                existingUtilisateur.setEmail(utilisateurDto.getEmail());
-            } else {
-                System.out.println(" Le champ 'email' est vide. Ancienne valeur conservée.");
-            }
-
-            if (utilisateurDto.getPassword() != null) {
-                existingUtilisateur.setPassword(utilisateurDto.getPassword());
-            } else {
-                System.out.println(" Le champ 'Password' est vide. Ancienne valeur conservée.");
-            }
-
-            System.out.println(" Utilisateur mis à jour avec succès !");
-            return save(existingUtilisateur);
-
-        } else {
-            System.out.println(" Erreur : Aucun utilisateur trouvé avec l'id " + id);
-            return null;
+            utilisateur.setEmail(utilisateurDto.getEmail());
         }
+
+        // Mise à jour des autres champs
+        if (utilisateurDto.getPrenom() != null && !utilisateurDto.getPrenom().isBlank()) {
+            utilisateur.setPrenom(utilisateurDto.getPrenom());
+        }
+        if (utilisateurDto.getNom() != null && !utilisateurDto.getNom().isBlank()) {
+            utilisateur.setNom(utilisateurDto.getNom());
+        }
+        if (utilisateurDto.getPassword() != null && !utilisateurDto.getPassword().isBlank()) {
+            utilisateur.setPassword(utilisateurDto.getPassword());
+        }
+        if (utilisateurDto.getRole() != null) {
+            utilisateur.setRole(utilisateurDto.getRole());
+        }
+
+        Utilisateur updated = utilisateurRepository.save(utilisateur);
+        return utilisateurMapper.toUtilisateurDto(updated);
     }
 
-
-
     @Override
-    public String deleteById(int id) {
+    public String deleteById (int id){
         if (!utilisateurRepository.existsById(id)) {
-            throw new RuntimeException("L'utilisateur avec l'id: " +id+" non trouvé");
+            throw new RuntimeException("L'utilisateur avec l'id: " + id + " non trouvé");
         }
-        utilisateurRepository.deleteById(id);
-        return "L'utilisateur a été supprimé avec succès !";
+        Utilisateur user = utilisateurRepository.findById(id).get();
+        user.setIsDeleted(true);
+        return "Utilisateur supprimé avec succes";
     }
 
-    @Override
-    public void deleteAll() {
-        utilisateurRepository.deleteAll();
-    }
 }

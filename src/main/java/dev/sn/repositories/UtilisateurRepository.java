@@ -14,9 +14,9 @@ import java.util.Optional;
 public interface UtilisateurRepository extends JpaRepository<Utilisateur, Integer> {
     Optional<Utilisateur> findByEmail(String email);
 
-    List<UtilisateurDto> findByNom(String nom);
+    List<Utilisateur> findByNom(String nom);
 
-    List<UtilisateurDto> findByRole(Role role);
+    List<Utilisateur> findByRole(Role role);
 
 //    public UtilisateurRepository() {}
 //
@@ -56,8 +56,5 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Intege
 //        em.remove(user);
 //    }
 //
-//    @Override
-//    public List<Utilisateur> findAll(Sort sort) {
-//        return List.of();
-//    }
+
 }

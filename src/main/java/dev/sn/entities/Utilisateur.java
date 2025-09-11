@@ -17,9 +17,23 @@ public class Utilisateur {
 
     private String nom;
     private String prenom;
+
+    @Column(unique = true, nullable = false)
     private String email;
     private String password;
     private Role role;
+
+    @Column(columnDefinition = "boolean default false")
+    private boolean isDeleted;
+
+    public void setIsDeleted(boolean b) {
+        isDeleted = b;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
 
 //    public Long getId() {
 //        return id;

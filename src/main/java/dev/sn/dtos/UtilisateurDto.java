@@ -14,6 +14,7 @@ public class UtilisateurDto {
     private String email;
     private Role role;
     private String password;
+    private boolean isDeleted;
 
 
     public Role getRole() {
@@ -64,3 +65,5 @@ public class UtilisateurDto {
         this.password = password;
     }
 }
+
+

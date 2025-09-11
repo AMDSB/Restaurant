@@ -1,20 +1,18 @@
 package dev.sn.repositories;
 
+import dev.sn.dtos.CommandeDto;
 import dev.sn.entities.Commande;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public abstract class CommandeRepository implements JpaRepository<Commande, Integer> {
+import java.util.Date;
+import java.util.List;
 
-    public CommandeRepository() {}
 
-    @PersistenceContext
-    private EntityManager em;
+@Repository
 
-    public Commande save(Commande commande){
-        em.persist(commande);
-        return commande;
-    }
+public interface CommandeRepository extends JpaRepository<Commande, Integer> {
 
+
+    List<CommandeDto> findByDate(Date date);
 }

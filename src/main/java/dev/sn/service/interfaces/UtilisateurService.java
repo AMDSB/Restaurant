@@ -16,11 +16,11 @@ public interface UtilisateurService  {
 
     List<UtilisateurDto> findByName(String nom);
 
+    Optional<UtilisateurDto> findByEmail(String email);
+
     Optional<UtilisateurDto> findById(int id);
 
     String deleteById(int id);
-
-    void deleteAll();
 
     List<UtilisateurDto> findByRole(Role role);
 
