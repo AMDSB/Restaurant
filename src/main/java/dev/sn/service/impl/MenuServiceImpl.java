@@ -42,19 +42,19 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-//    public Optional<MenuDto> findById(long menuId) {
-//        Optional<Menu> menuOptional = menuRepository.findById(menuId);
-//        return menuOptional.map(menu -> MenuDto.builder()
-////                .id(menu.getId())
-//                .name(menu.getName())
-//                .description(menu.getDescription())
-//                .build());
-//    }
-
     public Optional<MenuDto> findById(long menuId) {
-        return menuRepository.findById(menuId)
-                .map(menuMapper::toMenuDto);
+        Optional<Menu> menuOptional = menuRepository.findById(menuId);
+        return menuOptional.map(menu -> MenuDto.builder()
+                .id(menu.getId())
+                .name(menu.getName())
+                .description(menu.getDescription())
+                .build());
     }
+
+//    public Optional<MenuDto> findById(long menuId) {
+//        return menuRepository.findById(menuId)
+//                .map(menuMapper::toMenuDto);
+//    }
 
     @Override
     public MenuDto update(long menuId, MenuDto menuDto) {
