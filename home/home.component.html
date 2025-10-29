@@ -1,0 +1,70 @@
+<!-- Contenu principal -->
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+<div class="container mt-4">
+  <h1>Bienvenue dans l'univers des saveurs envoutantes</h1>
+  <p id="txt">Chez nous tout part d'une histoire d'amour pour les saveurs africaines, 
+    pour les gouts envoutants. Ces histoires nous vous la racontons a travers les delicieux plats 
+    que nous vous servons avec amour et consideration. 
+    Vous comme les sages petits enfants africains assis sous l'arbre du soir 
+    et nous comme leur grand-pere assis au milieu d'eux pour leur conter de belles histoires.
+</p>
+</div>
+
+
+<div class="container my-5">
+  <h2 class="text-center mb-4"> Nos plats les plus populaires</h2>
+
+  <!-- Catégories -->
+  <div class="text-center mb-4">
+    <button class="btn btn-outline-secondary mx-2 active">Fast-food</button>
+    <button class="btn btn-outline-secondary mx-2">Pizza</button>
+    <!-- <button class="btn btn-outline-secondary mx-2">Sandwich</button> -->
+    <button class="btn btn-outline-secondary mx-2">Boissons</button>
+    <button class="btn btn-outline-secondary mx-2">Desserts</button>
+  </div>
+
+  <!-- Carrousel -->
+  <div id="carouselPlats" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <!-- Slide 1 -->
+      <div class="carousel-item active">
+        <div class="row justify-content-center">
+          <div class="col-md-3 mx-3 card-plat">
+            <img src="assets/hamburger.jpg" class="card-img-top" alt="Steak Burger">
+            <div class="card-body text-center">
+              <h5>Steak Burger</h5>
+              <p class="prix">1 500f</p>
+            </div>
+          </div>
+
+          <div class="col-md-3 mx-3 card-plat">
+            <img src="assets/Tacos.png" class="card-img-top" alt="Tacos">
+            <div class="card-body text-center">
+              <h5>Tacos</h5>
+              <p class="prix">2 500f</p>
+            </div>
+          </div>
+
+          <div class="col-md-3 mx-3 card-plat">
+            <img src="assets/Sandwich-viande.png" class="card-img-top" alt="Sandwich-viande">
+            <div class="card-body text-center">
+              <h5>Sandwich</h5>
+              <p class="prix">1 000f</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contrôles -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselPlats" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselPlats" data-bs-slide="next">
+      <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"></span>
+    </button>
+  </div>
+</div>
+

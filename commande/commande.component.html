@@ -1,0 +1,136 @@
+<div class="container-fluid mt-4">
+  <div class="row">
+    <!-- Section de gauche : Commandes en cours -->
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Commande en cours - {{currentTable.name}}</h5>
+        </div>
+        <div class="card-body">
+          <!-- Détails de la commande -->
+          <div class="order-details mb-4">
+            <div *ngFor="let item of currentTable.orders; let i = index" class="order-item d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+              <div>
+                <h6 class="mb-0">{{item.name}}</h6>
+                <small class="text-muted">{{item.quantity}} Unité(s) à $ {{item.unitPrice.toFixed(2)}} / Unité(s)</small>
+              </div>
+              <div class="d-flex align-items-center">
+                <span class="me-3">$ {{item.totalPrice.toFixed(2)}}</span>
+                <div class="btn-group btn-group-sm">
+                  <button class="btn btn-outline-secondary" (click)="updateQuantity(i, -1)">-</button>
+                  <button class="btn btn-outline-secondary" disabled>{{item.quantity}}</button>
+                  <button class="btn btn-outline-secondary" (click)="updateQuantity(i, 1)">+</button>
+                </div>
+                <button class="btn btn-outline-danger btn-sm ms-2" (click)="removeItemFromOrder(i)">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </div>
+            
+            <div *ngIf="currentTable.orders.length === 0" class="text-center text-muted py-4">
+              Aucun article ajouté à la commande
+            </div>
+          </div>
+
+          <!-- Total et taxes -->
+          <div class="totals-section border-top pt-3">
+            <div class="d-flex justify-content-between">
+              <span>Sous-total:</span>
+              <span>$ {{subtotal.toFixed(2)}}</span>
+            </div>
+            <div class="d-flex justify-content-between">
+              <span>Taxes ({{(taxRate * 100).toFixed(0)}}%):</span>
+              <span>$ {{taxAmount.toFixed(2)}}</span>
+            </div>
+            <div class="d-flex justify-content-between fw-bold fs-5 mt-2">
+              <span>Total:</span>
+              <span>$ {{totalAmount.toFixed(2)}}</span>
+            </div>
+          </div>
+
+          <!-- Options de commande -->
+          <div class="order-options mt-4">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="note" class="form-label">Note</label>
+                <textarea class="form-control" id="note" rows="2" [(ngModel)]="note" placeholder="Ajouter une note..."></textarea>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Invités</label>
+                <div class="d-flex align-items-center">
+                  <button class="btn btn-outline-secondary" (click)="removeGuest()">-</button>
+                  <span class="mx-3">{{numberOfGuests}}</span>
+                  <button class="btn btn-outline-secondary" (click)="addGuest()">+</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button class="btn btn-outline-primary me-md-2" (click)="splitBill()">Diviser</button>
+              <button class="btn btn-success" (click)="processPayment()">Payer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Clavier numérique -->
+      <div class="card mt-4">
+        <div class="card-body">
+          <h6 class="card-title">Clavier</h6>
+          <div class="row g-2">
+            <div class="col-4"><button class="btn btn-outline-secondary w-100">1</button></div>
+            <div class="col-4"><button class="btn btn-outline-secondary w-100">2</button></div>
+            <div class="col-4"><button class="btn btn-outline-secondary w-100">3</button></div>
+            <div class="col-4"><button class="btn btn-outline-secondary w-100">4</button></div>
+            <div class="col-4"><button class="btn btn-outline-secondary w-100">5</button></div>
+            <div class="col-4"><button class="btn btn-outline-secondary w-100">6</button></div>
+            <div class="col-4"><button class="btn btn-outline-secondary w-100">7</button></div>
+            <div class="col-4"><button class="btn btn-outline-secondary w-100">8</button></div>
+            <div class="col-4"><button class="btn btn-outline-secondary w-100">9</button></div>
+            <div class="col-4"><button class="btn btn-outline-secondary w-100">+/-</button></div>
+            <div class="col-4"><button class="btn btn-outline-secondary w-100">0</button></div>
+            <div class="col-4"><button class="btn btn-outline-secondary w-100">,</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section de droite : Tables et Menu -->
+    <div class="col-md-4">
+      <!-- Sélection des tables -->
+      <div class="card mb-4">
+        <div class="card-header bg-secondary text-white">
+          <h6 class="mb-0">Tables</h6>
+        </div>
+        <div class="card-body">
+          <div class="list-group">
+            <button *ngFor="let table of tables; let i = index" 
+                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                    [class.active]="i === selectedTableIndex"
+                    (click)="selectTable(i)">
+              {{table.name}}
+              <span class="badge bg-primary rounded-pill">$ {{table.total.toFixed(2)}}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Menu par catégories -->
+      <div *ngFor="let category of menuCategories" class="card mb-4">
+        <div class="card-header bg-light">
+          <h6 class="mb-0">{{category.name}}</h6>
+        </div>
+        <div class="card-body">
+          <div class="list-group">
+            <button *ngFor="let item of category.items" 
+                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                    (click)="addItemToOrder(item)">
+              {{item.name}}
+              <span class="badge bg-success rounded-pill">$ {{item.price.toFixed(2)}}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

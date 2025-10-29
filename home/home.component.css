@@ -1,0 +1,43 @@
+h1{
+    font-size: 3.5rem;
+    font-weight:lighter;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: 'Great Vibes', cursive;}
+
+
+.card-plat {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.card-plat:hover {
+  transform: translateY(-5px);
+}
+
+.card-plat img {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  height: 220px;
+  object-fit: cover;
+}
+
+.prix {
+  background-color: #7b4f2c;
+  color: white;
+  border-radius: 20px;
+  display: inline-block;
+  padding: 5px 15px;
+  font-weight: bold;
+}
+
+#txt{
+    font-size: 1.0rem;
+    text-align: center;
+    margin-bottom: 40px;
+    color: #333;
+    font-family: 'Parisienne', cursive;
+}

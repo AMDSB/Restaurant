@@ -1,0 +1,31 @@
+.navbar{
+    position: sticky;
+
+}
+
+.navbar-brand img {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.nav-link {
+  font-weight: 1000;
+}
+
+.nav-link:hover {
+  color: #ffc107 !important; /* Jaune doré au survol */
+}
+
+/* Agrandir le texte des nav-items */
+.navbar-nav .nav-link {
+  font-size: 1.5rem; /* taille plus grande */
+  font-weight: 500;
+  text-align: center; /* centrer le texte */
+}
+
+/* Étendre les nav-items pour prendre tout l'espace */
+.navbar-nav {
+  flex: 1; /* prend tout l'espace disponible entre logo et profil */
+  display: flex;
+  justify-content: space-around; /* espace égal entre chaque item */
+}
