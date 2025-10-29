@@ -6,6 +6,7 @@ import { CommandeComponent } from './commande/commande.component';
 import { HeaderComponent } from './header/header.component';
 import { RouterOutlet } from "@angular/router";
 import { FooterComponent } from './footer/footer.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 
 // import { RouterOutlet } from "@angular/router";  // 👈 importe ton header
