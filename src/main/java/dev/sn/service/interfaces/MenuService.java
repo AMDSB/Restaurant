@@ -13,4 +13,7 @@ public interface MenuService {
     String deleteById(long menuId);
     String deleteAll();
 
+    MenuDto addPlatToMenu(long menuId, long platId);
+
+    MenuDto removePlatFromMenu(long menuId, long platId);
 }

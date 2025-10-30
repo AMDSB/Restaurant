@@ -38,6 +38,7 @@ public class MenuController {
 
     @PutMapping("/{id}")
     public MenuDto update(@PathVariable long id, @RequestBody MenuDto menuDto){
+
         return menuService.update(id, menuDto);
     }
 
@@ -51,4 +52,15 @@ public class MenuController {
     public String deleteById(@PathVariable long id){
         return menuService.deleteById(id);
     }
+
+    @PostMapping("/{menuId}/plats/{platId}")
+    public MenuDto addPlat(@PathVariable long menuId, @PathVariable long platId) {
+        return menuService.addPlatToMenu(menuId, platId);
+    }
+
+    @DeleteMapping("/{menuId}/plats/{platId}")
+    public MenuDto removePlat(@PathVariable long menuId, @PathVariable long platId) {
+        return menuService.removePlatFromMenu(menuId, platId);
+    }
+
 }
