@@ -30,25 +30,12 @@ public class AuthenticationService {
                 .fullName(input.getFullName())
                 .email(input.getEmail())
                 .password(passwordEncoder.encode(input.getPassword()))
-                .role(Role.GERANT)
+                .role(Role.SERVEUR)
                 .build();
 
         return user1Repository.save(user);
     }
 
-//    public String authenticate(LoginUserDto input) {
-//        authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(
-//                        input.getEmail(),
-//                        input.getPassword()
-//                )
-//        );
-//
-//        User1 user = user1Repository.findByEmail(input.getEmail())
-//                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
-//
-//        return jwtUtil.generateToken(user);
-//    }
 
 
     public User1 authenticate(LoginUserDto input) {
